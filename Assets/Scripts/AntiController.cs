@@ -16,11 +16,21 @@ public class AntiController : MonoBehaviour
     public float jumpAcceleration;
     public float jumpDecceleration;
 
+    public Transform NoFloorPoint;
     public float maxRaycastAngle;
     public float _raycastAngle; 
 
+    public Transform WallJumpPoint;
+    public float wallJumpDistance;
+
     public bool Jumping;
     private float _jumpingSpeed;
+
+    [Header("Grounded")]
+    public bool Grounded;
+    public float GroundedSize;
+    public Transform GroundCheckPoint;
+
 
     private Vector2 _pos;
 
@@ -31,8 +41,14 @@ public class AntiController : MonoBehaviour
 
     void Update()
     {
+        GroundCheck();
         Move();
         Jump();
+    }
+
+    private void GroundCheck()
+    {
+        Grounded = Physics2D.OverlapCircle(GroundCheckPoint.position, GroundedSize);
     }
 
     private void Move() 
@@ -70,24 +86,34 @@ public class AntiController : MonoBehaviour
             return;
         }
 
+        if (!Grounded) return;            
+
         //_raycastAngle = (maxRaycastAngle * _speed) / MaxSpeed;        
 
+        /* NoFloorCheck */
         float angle = _raycastAngle;
-
         Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
-
-        RaycastHit2D raycast = Physics2D.Raycast(transform.position, direction);
-
-        Vector2 pos = transform.position;
-
+        RaycastHit2D raycast = Physics2D.Raycast(NoFloorPoint.position, direction);
 		if(raycast)
 		{
-    		Debug.DrawLine(transform.position, pos + direction * raycast.distance, Color.red);
+    		Debug.DrawLine(NoFloorPoint.position, (Vector2) NoFloorPoint.position + direction * raycast.distance, Color.red);
 		} else {
-	    	Debug.DrawLine(transform.position, pos + direction * 1000, Color.white);
+	    	Debug.DrawLine(NoFloorPoint.position, (Vector2) NoFloorPoint.position + direction * 1000, Color.white);
             Jumping = true;
             _jumpingSpeed = jumpAcceleration;
         }
+
+        /* WallCheck */
+        RaycastHit2D raycastWall = Physics2D.Raycast(NoFloorPoint.position, Vector2.right, wallJumpDistance);
+		if(raycastWall)
+		{
+    		Debug.DrawLine(WallJumpPoint.position, (Vector2) WallJumpPoint.position + Vector2.right * raycastWall.distance, Color.red);
+            Jumping = true;
+            _jumpingSpeed = jumpAcceleration;
+		} else {
+	    	Debug.DrawLine(WallJumpPoint.position, (Vector2) WallJumpPoint.position + Vector2.right * wallJumpDistance, Color.white);
+        }
+
     }
 
 }
