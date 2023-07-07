@@ -3,11 +3,17 @@ using UnityEngine;
 public class DraggableElement : MonoBehaviour
 {
     public enum Axis { x, y, none };
-
+    
     [SerializeField] private Axis axis = Axis.y;
-
+    [SerializeField] private float maxSpeed = 0.25f;
     private bool dragging = false;
     private Vector3 dragPosition;
+    private Vector3 startPosition;
+
+    void Start()
+    {
+        startPosition = transform.position;
+    }
 
     void OnMouseDown()
     {
@@ -28,13 +34,16 @@ public class DraggableElement : MonoBehaviour
         dragging = false;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!dragging) return;
 
         var currentMousePosition = GetMousePosition();
         var currentPosition = transform.position;
         var currentMouseDelta = currentMousePosition - dragPosition;
+
+        currentMouseDelta.x = Mathf.Clamp(currentMouseDelta.x, -maxSpeed, maxSpeed);
+        currentMouseDelta.y = Mathf.Clamp(currentMouseDelta.y, -maxSpeed, maxSpeed);
 
         switch (axis)
         {
@@ -46,7 +55,35 @@ public class DraggableElement : MonoBehaviour
                 break;
         }
 
-        transform.position += currentMouseDelta;
+        Vector3 target = transform.position + currentMouseDelta;
+
+        transform.position = target;
+
         dragPosition = currentMousePosition;
     }
+
+    // void FixedUpdate()
+    // {
+    //     if (!dragging) return;
+
+    //     var currentMousePosition = GetMousePosition();
+    //     var currentPosition = transform.position;
+    //     var directionToMouse = currentMousePosition - currentPosition;
+
+    //     switch (axis)
+    //     {
+    //         case Axis.x:
+    //             directionToMouse.y = 0;
+    //             break;
+    //         case Axis.y:
+    //             directionToMouse.x = 0;
+    //             break;
+    //     }
+
+    //     directionToMouse.Normalize();
+
+    //     Vector3 targetPosition = currentPosition + directionToMouse * maxSpeed * Time.fixedDeltaTime;
+
+    //     transform.position = Vector3.MoveTowards(currentPosition, targetPosition, maxSpeed * Time.fixedDeltaTime);
+    // }
 }
