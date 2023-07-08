@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class AntiController : MonoBehaviour
 {
-    public Transform goal;
+    [Header("RaycastPoints")]
+    public Transform HeadPoint;
+    public Transform MiddlePoint;
+    public Transform FootPoint;
+    public Transform ThirdEye;
 
     [Header("Movement")]
     public float MaxSpeed;
@@ -13,6 +17,7 @@ public class AntiController : MonoBehaviour
     private float _speed;
     public bool forward;
     public bool Moving;
+    public float changeDistanceFrom;
 
     [Header("Jumping")]
     public float maxJumpHeight;
@@ -22,11 +27,9 @@ public class AntiController : MonoBehaviour
     public float _jumpingTime;
     public float _jumpingHeight;
 
-    public Transform NoFloorPoint;
     public float maxRaycastAngle;
     public float _raycastAngle; 
 
-    public Transform WallJumpPoint;
     public float wallJumpDistance;
 
     public bool Jumping;
@@ -42,7 +45,6 @@ public class AntiController : MonoBehaviour
     public bool Grounded;
     public float GroundedSize;
     public float minGroundTime;
-    public Transform GroundCheckPoint;
     private float _groundTime;
 
 
@@ -53,33 +55,43 @@ public class AntiController : MonoBehaviour
         _speed = 0;
         _jumpingSpeed = jumpStart;
         Moving = true;
+        forward = true;
     }
 
     void Update()
     {
-        FindGoal();
-
+        DirectionCheck();
         GroundCheck();
         Move();
         Jump();
         Fall();
     }
 
-    private void FindGoal()
+    private void DirectionCheck()
     {
-        if (goal.transform.position.x > transform.position.x)
-        {
-            forward = true;
-        }
-        else 
-        {
-            forward = false;
+        float angle = forward ? 0 : 180;
+        Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
+        RaycastHit2D raycastDir = Physics2D.Raycast(ThirdEye.position, direction, changeDistanceFrom);
+        RaycastHit2D raycastDir2 = Physics2D.Raycast(FootPoint.position, direction, changeDistanceFrom);
+
+		if(raycastDir && raycastDir2)
+		{
+            forward = !forward;
+    		Debug.DrawLine(ThirdEye.position, (Vector2) ThirdEye.position + direction * raycastDir.distance, Color.red);
+    		Debug.DrawLine(FootPoint.position, (Vector2) FootPoint.position + direction * raycastDir.distance, Color.red);
+		} else {
+	    	Debug.DrawLine(ThirdEye.position, 
+                (Vector2) ThirdEye.position + direction * changeDistanceFrom,
+                 Color.white);
+	    	Debug.DrawLine(FootPoint.position, 
+                (Vector2) FootPoint.position + direction * changeDistanceFrom,
+                 Color.white);
         }
     }
 
     private void GroundCheck()
     {
-        Grounded = Physics2D.OverlapCircle(GroundCheckPoint.position, GroundedSize);
+        Grounded = Physics2D.OverlapCircle(FootPoint.position, GroundedSize);
         if (Grounded)
         {
             _groundTime += Time.deltaTime;
@@ -95,18 +107,23 @@ public class AntiController : MonoBehaviour
 
     private void Move() 
     {
-        if (Moving && _speed < MaxSpeed)
-        {
-            _speed += Acceleration * Time.deltaTime;
-        } else 
-        {
-            _speed -= Decceleration * Time.deltaTime;
-        }
+            if (Moving && _speed < MaxSpeed)
+            {
+                _speed += Acceleration * Time.deltaTime;
+            } else 
+            {
+                _speed -= Decceleration * Time.deltaTime;
+            }
 
-        _speed = Mathf.Clamp(_speed, 0, MaxSpeed);
+            _speed = Mathf.Clamp(_speed, 0, MaxSpeed);
 
         _pos = transform.position;
-        _pos.x = transform.position.x + _speed * Time.deltaTime;
+        if (forward)
+        {
+            _pos.x = transform.position.x + _speed * Time.deltaTime;
+        } else {
+            _pos.x = transform.position.x - _speed * Time.deltaTime;
+        }
         transform.position = _pos;
     }
 
@@ -130,31 +147,32 @@ public class AntiController : MonoBehaviour
     {
         float angle = forward ? - 90 + _raycastAngle : - 90 - _raycastAngle;
         Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
-        RaycastHit2D raycastFloor = Physics2D.Raycast(NoFloorPoint.position, direction);
+        RaycastHit2D raycastFloor = Physics2D.Raycast(HeadPoint.position, direction);
         if(raycastFloor)
 		{
-    		Debug.DrawLine(NoFloorPoint.position, (Vector2) NoFloorPoint.position + direction * raycastFloor.distance, Color.red);
+    		Debug.DrawLine(HeadPoint.position, (Vector2) HeadPoint.position + direction * raycastFloor.distance, Color.red);
 		} else {
-	    	Debug.DrawLine(NoFloorPoint.position, (Vector2) NoFloorPoint.position + direction * 1000, Color.white);
+	    	Debug.DrawLine(HeadPoint.position, (Vector2) HeadPoint.position + direction * 1000, Color.white);
         }
 
-        RaycastHit2D raycastWallFoot = Physics2D.Raycast(WallJumpPoint.position, Vector2.right, wallJumpDistance);
+        Vector2 wallDirection = forward ? Vector2.right : Vector2.left;
+        RaycastHit2D raycastWallFoot = Physics2D.Raycast(FootPoint.position, wallDirection, wallJumpDistance);
 		if(raycastWallFoot)
 		{
-    		Debug.DrawLine(WallJumpPoint.position, (Vector2) WallJumpPoint.position + Vector2.right * raycastWallFoot.distance, Color.red);
+    		Debug.DrawLine(FootPoint.position, (Vector2) FootPoint.position + wallDirection * raycastWallFoot.distance, Color.red);
 		} else {
-	    	Debug.DrawLine(WallJumpPoint.position, 
-                (Vector2) WallJumpPoint.position + Vector2.right * wallJumpDistance,
+	    	Debug.DrawLine(FootPoint.position, 
+                (Vector2) FootPoint.position + wallDirection * wallJumpDistance,
                  Color.white);
         }
 
-        RaycastHit2D raycastWallHead = Physics2D.Raycast(NoFloorPoint.position, Vector2.right, wallJumpDistance);
+        RaycastHit2D raycastWallHead = Physics2D.Raycast(HeadPoint.position, wallDirection, wallJumpDistance);
 		if(raycastWallHead)
 		{
-    		Debug.DrawLine(NoFloorPoint.position, (Vector2) NoFloorPoint.position + Vector2.right * raycastWallHead.distance, Color.red);
+    		Debug.DrawLine(HeadPoint.position, (Vector2) HeadPoint.position + wallDirection * raycastWallHead.distance, Color.red);
 		} else {
-	    	Debug.DrawLine(NoFloorPoint.position, 
-                (Vector2) NoFloorPoint.position + Vector2.right * wallJumpDistance,
+	    	Debug.DrawLine(HeadPoint.position, 
+                (Vector2) HeadPoint.position + wallDirection * wallJumpDistance,
                  Color.white);
         }
 
@@ -191,7 +209,7 @@ public class AntiController : MonoBehaviour
 
         //_raycastAngle = (maxRaycastAngle * _speed) / MaxSpeed;        
 
-		if(!StayGrounded() && (!raycastFloor || raycastWallFoot || raycastWallHead))
+		if(!StayGrounded() && (raycastWallFoot || raycastWallHead))
 		{
             Jumping = true;
             _jumpingTime = 0;

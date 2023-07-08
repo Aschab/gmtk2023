@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 8795350941769215502}
   - component: {fileID: 364204795555758767}
   - component: {fileID: 6865027570343112203}
+  - component: {fileID: 8611271592142717125}
   m_Layer: 2
   m_Name: Player
   m_TagString: Untagged
@@ -66,8 +67,9 @@ Transform:
   - {fileID: 5149862690763635244}
   - {fileID: 4996558758980559084}
   - {fileID: 2585110178345272578}
+  - {fileID: 8244469213941484017}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8096628368903765972
 SpriteRenderer:
@@ -192,7 +194,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &6865027570343112203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,21 +207,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322d28f8396d64931a8263cd767b8d3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HeadPoint: {fileID: 5149862690763635244}
+  MiddlePoint: {fileID: 4996558758980559084}
+  FootPoint: {fileID: 2585110178345272578}
+  ThirdEye: {fileID: 8244469213941484017}
   MaxSpeed: 10
   Acceleration: 10
   Decceleration: 15
+  forward: 0
   Moving: 0
-  jumpAcceleration: 10
-  jumpDecceleration: 15
-  NoFloorPoint: {fileID: 5149862690763635244}
+  changeDistanceFrom: 0
+  maxJumpHeight: 2.5
+  jumpStart: 20
+  jumpDecceleration: 30
+  minJumpingTime: 0.1
+  _jumpingTime: 0
+  _jumpingHeight: 0
   maxRaycastAngle: -30
-  _raycastAngle: -30
-  WallJumpPoint: {fileID: 2585110178345272578}
+  _raycastAngle: 45
   wallJumpDistance: 1
   Jumping: 0
+  _jumpingSpeed: 0
+  fallingAcceleration: 8
+  maxFallingAcceleration: 15
+  Falling: 0
+  _fallingSpeed: 0
   Grounded: 0
   GroundedSize: 0.1
-  GroundCheckPoint: {fileID: 2585110178345272578}
+  minGroundTime: 0.2
+--- !u!114 &8611271592142717125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2969913208778298300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f94eb2f59cd148c4929649d58442cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nodes: []
+  _goal: {fileID: 0}
+  rules:
+    radius: 1
+    maxHeight: 5
+    downAngle: 0
 --- !u!1 &3511133885451144475
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,6 +309,37 @@ Transform:
   m_GameObject: {fileID: 3522674803916142263}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.494, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6201297418028235488}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5764927766769752904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8244469213941484017}
+  m_Layer: 2
+  m_Name: ThirdEye
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8244469213941484017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5764927766769752904}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
