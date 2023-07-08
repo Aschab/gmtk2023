@@ -49,6 +49,8 @@ public class AntiController : MonoBehaviour
 
 
     private Vector2 _pos;
+    private Rigidbody2D rb;
+
 
     void Start()
     {
@@ -56,6 +58,7 @@ public class AntiController : MonoBehaviour
         _jumpingSpeed = jumpStart;
         Moving = true;
         forward = true;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -117,14 +120,12 @@ public class AntiController : MonoBehaviour
 
             _speed = Mathf.Clamp(_speed, 0, MaxSpeed);
 
-        _pos = transform.position;
         if (forward)
         {
-            _pos.x = transform.position.x + _speed * Time.deltaTime;
+            rb.velocity += new Vector2(_speed * Time.deltaTime, 0);
         } else {
-            _pos.x = transform.position.x - _speed * Time.deltaTime;
+            rb.velocity += new Vector2(-_speed * Time.deltaTime, 0);
         }
-        transform.position = _pos;
     }
 
     private void Fall()
@@ -138,9 +139,8 @@ public class AntiController : MonoBehaviour
         _fallingSpeed += fallingAcceleration * Time.deltaTime;
         _fallingSpeed = Mathf.Clamp(_fallingSpeed, 0, maxFallingAcceleration);
         
-        _pos = transform.position;
-        _pos.y = transform.position.y - _fallingSpeed * Time.deltaTime;
-        transform.position = _pos;
+        rb.velocity -= new Vector2(0, _fallingSpeed * Time.deltaTime);
+
     }
 
     private void Jump()
@@ -180,10 +180,9 @@ public class AntiController : MonoBehaviour
         {
             _jumpingSpeed -= jumpDecceleration * Time.deltaTime;
 
-            _pos = transform.position;
-            _pos.y = transform.position.y + _jumpingSpeed * Time.deltaTime;
             _jumpingHeight += _jumpingSpeed * Time.deltaTime;
-            transform.position = _pos;
+            rb.velocity += new Vector2(0, _jumpingSpeed * Time.deltaTime);
+
             
             _jumpingTime += Time.deltaTime;
 
