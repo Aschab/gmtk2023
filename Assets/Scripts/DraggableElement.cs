@@ -1,89 +1,55 @@
 using UnityEngine;
-
 public class DraggableElement : MonoBehaviour
 {
     public enum Axis { x, y, none };
-    
     [SerializeField] private Axis axis = Axis.y;
-    [SerializeField] private float maxSpeed = 0.25f;
-    private bool dragging = false;
-    private Vector3 dragPosition;
-    private Vector3 startPosition;
-
+    [HideInInspector]
+    public bool dragging = false;
+    private Rigidbody2D rb;
+    private Vector2 dragPosition;
     void Start()
     {
-        startPosition = transform.position;
+        rb = GetComponent<Rigidbody2D>();
+        rb.isKinematic = true;
     }
-
     void OnMouseDown()
     {
         dragging = true;
-        dragPosition = GetMousePosition();
+        dragPosition = GetMouseWorldPosition();
     }
-
-    private Vector3 GetMousePosition()
+    private Vector2 GetMouseWorldPosition()
     {
         Camera cam = Camera.main;
         Vector3 mousePos = Input.mousePosition;
         Vector3 worldPos = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.nearClipPlane));
-        return new Vector3(worldPos.x, worldPos.y, 0);
+        return new Vector2(worldPos.x, worldPos.y);
     }
-
     void OnMouseUp()
     {
         dragging = false;
     }
-
     void FixedUpdate()
     {
         if (!dragging) return;
 
-        var currentMousePosition = GetMousePosition();
-        var currentPosition = transform.position;
-        var currentMouseDelta = currentMousePosition - dragPosition;
-
-        currentMouseDelta.x = Mathf.Clamp(currentMouseDelta.x, -maxSpeed, maxSpeed);
-        currentMouseDelta.y = Mathf.Clamp(currentMouseDelta.y, -maxSpeed, maxSpeed);
+        var mousePosition = GetMouseWorldPosition();
+        var dragDelta = mousePosition - dragPosition;
 
         switch (axis)
         {
             case Axis.x:
-                currentMouseDelta.y = 0;
+                dragDelta.y = 0;
                 break;
             case Axis.y:
-                currentMouseDelta.x = 0;
-                break;
+                dragDelta.x = 0;
+            break;
         }
 
-        Vector3 target = transform.position + currentMouseDelta;
+        
+        Vector3 target = rb.position + dragDelta;
 
-        transform.position = target;
+        rb.MovePosition(target);
 
-        dragPosition = currentMousePosition;
+        dragPosition = target;
     }
-
-    // void FixedUpdate()
-    // {
-    //     if (!dragging) return;
-
-    //     var currentMousePosition = GetMousePosition();
-    //     var currentPosition = transform.position;
-    //     var directionToMouse = currentMousePosition - currentPosition;
-
-    //     switch (axis)
-    //     {
-    //         case Axis.x:
-    //             directionToMouse.y = 0;
-    //             break;
-    //         case Axis.y:
-    //             directionToMouse.x = 0;
-    //             break;
-    //     }
-
-    //     directionToMouse.Normalize();
-
-    //     Vector3 targetPosition = currentPosition + directionToMouse * maxSpeed * Time.fixedDeltaTime;
-
-    //     transform.position = Vector3.MoveTowards(currentPosition, targetPosition, maxSpeed * Time.fixedDeltaTime);
-    // }
 }

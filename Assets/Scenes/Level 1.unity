@@ -219,17 +219,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 282139168}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 322d28f8396d64931a8263cd767b8d3d, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a93dbdae395b2b448cf0d63935191fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxSpeed: 10
-  Acceleration: 2
-  Decceleration: 5
+  MaxSpeed: 0
+  Acceleration: 0
+  Decceleration: 0
   Moving: 0
   jumpAcceleration: 0
   jumpDecceleration: 0
+  NoFloorPoint: {fileID: 0}
+  maxRaycastAngle: 0
+  _raycastAngle: 0
+  WallJumpPoint: {fileID: 0}
+  wallJumpDistance: 0
   Jumping: 0
-  raycast_angle: 0
+  Grounded: 0
+  GroundedSize: 0
+  GroundCheckPoint: {fileID: 0}
 --- !u!50 &282139172
 Rigidbody2D:
   serializedVersion: 4
