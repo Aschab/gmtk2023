@@ -47,6 +47,9 @@ public class AntiController : MonoBehaviour
     public float minGroundTime;
     private float _groundTime;
 
+    [Header("Others")]
+    public Animator animator;
+    public GameObject penguin;
 
     private Vector2 _pos;
     private Rigidbody2D rb;
@@ -68,6 +71,31 @@ public class AntiController : MonoBehaviour
         Move();
         Jump();
         Fall();
+        Animate();
+    }
+
+    private void Animate()
+    {
+        if (Falling)
+        {
+            animator.SetBool("fall", true);
+            animator.SetBool("walk", false);
+        } else if (Moving)
+        {
+            animator.SetBool("fall", false);
+            animator.SetBool("walk", true);
+        } else 
+        {
+            animator.SetBool("fall", false);
+            animator.SetBool("walk", false);
+        }
+
+        if ((forward && penguin.transform.localScale.x < 0) || (!forward && penguin.transform.localScale.x > 0))
+        {
+            penguin.transform.localScale = new Vector3(-penguin.transform.localScale.x, penguin.transform.localScale.y, penguin.transform.localScale.z);
+        } 
+
+        // animator.SetBool("die", true);
     }
 
     private void DirectionCheck()
