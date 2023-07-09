@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 8795350941769215502}
   - component: {fileID: 364204795555758767}
   - component: {fileID: 6865027570343112203}
-  - component: {fileID: 8611271592142717125}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -63,7 +62,7 @@ Transform:
   m_GameObject: {fileID: 2969913208778298300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.9, y: -7.06, z: 0}
-  m_LocalScale: {x: -0.4, y: 1.0297, z: 1}
+  m_LocalScale: {x: 0.4, y: 1.0297, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5607408139231256214}
@@ -72,7 +71,7 @@ Transform:
   - {fileID: 2585110178345272578}
   - {fileID: 8244469213941484017}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3625280854756430026
 MonoBehaviour:
@@ -246,7 +245,7 @@ MonoBehaviour:
   forward: 0
   Moving: 0
   changeDistanceFrom: 2
-  maxJumpHeight: 10
+  maxJumpHeight: 8
   jumpStart: 50
   jumpDecceleration: 30
   minJumpingTime: 0.1
@@ -266,24 +265,6 @@ MonoBehaviour:
   minGroundTime: 0.2
   animator: {fileID: 3834155852035598256}
   penguin: {fileID: 0}
---- !u!114 &8611271592142717125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2969913208778298300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f94eb2f59cd148c4929649d58442cbe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _nodes: []
-  _goal: {fileID: 0}
-  rules:
-    radius: 1
-    maxHeight: 5
-    downAngle: 0
 --- !u!1 &3511133885451144475
 GameObject:
   m_ObjectHideFlags: 0

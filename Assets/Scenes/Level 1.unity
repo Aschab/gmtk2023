@@ -346,34 +346,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3127386526569637246, guid: 78dc7d7f83dbe48e0bac75777477dbec, type: 3}
   m_PrefabInstance: {fileID: 252806170}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &282139168 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2969913208778298300, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-  m_PrefabInstance: {fileID: 8704006905480674621}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &282139170 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6201297418028235488, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
   m_PrefabInstance: {fileID: 8704006905480674621}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &282139175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 282139168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f94eb2f59cd148c4929649d58442cbe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _nodes: []
-  _goal: {fileID: 0}
-  rules:
-    radius: 1
-    maxHeight: 5
-    downAngle: 0
 --- !u!4 &291766582 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3127386526569637246, guid: 78dc7d7f83dbe48e0bac75777477dbec, type: 3}
@@ -3300,14 +3277,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 364204795555758767, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 364204795555758767, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: m_GravityScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2969913208778298300, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3356,63 +3325,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: goal
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: Jumping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: maxJump
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: MaxSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: jumpStart
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: _raycastAngle
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: maxJumpHeight
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: minGroundTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: minJumpingTime
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: jumpAcceleration
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: jumpDecceleration
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: fallingAcceleration
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6865027570343112203, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      propertyPath: maxFallingAcceleration
-      value: 15
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2969913208778298300, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 282139175}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56057cab8fd1f46bf961a2b1475b7362, type: 3}

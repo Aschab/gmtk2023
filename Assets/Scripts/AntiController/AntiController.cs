@@ -242,7 +242,13 @@ public class AntiController : MonoBehaviour
 
         //_raycastAngle = (maxRaycastAngle * _speed) / MaxSpeed;        
 
-		if(!StayGrounded() && (raycastWallFoot || raycastWallHead))
+        bool danger = false;
+        if (raycastFloor && raycastFloor.collider.gameObject.tag == "Spike")
+        {
+            danger = true;
+        }
+
+		if(!StayGrounded() && (raycastWallFoot || raycastWallHead || danger))
 		{
             Jumping = true;
             _jumpingTime = 0;
