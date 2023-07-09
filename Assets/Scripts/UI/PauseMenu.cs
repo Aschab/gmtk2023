@@ -6,9 +6,12 @@ public class PauseMenu : MonoBehaviour
     {
         Application.Quit();
     }
-
     public void GoToStart()
     {
         SceneManager.SwitchToStart();
+    }
+    public void GoToSelect()
+    {
+        SceneManager.SwitchToSelect();
     }
 }

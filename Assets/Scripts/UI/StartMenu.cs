@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class StartMenu : MonoBehaviour
 {
-    public void GoToPlay()
+    public void Continue()
     {
         SceneManager.SwitchToLevel(1);
     }
-
     public void Quit()
     {
         Application.Quit();
+    }
+    public void GoToSelect()
+    {
+        SceneManager.SwitchToSelect();
     }
 }

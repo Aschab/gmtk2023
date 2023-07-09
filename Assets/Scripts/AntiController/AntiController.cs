@@ -66,16 +66,22 @@ public class AntiController : MonoBehaviour
 
     void Update()
     {
+        Animate();
+    }
+
+    void FixedUpdate()
+    {
         DirectionCheck();
         GroundCheck();
         Move();
         Jump();
         Fall();
-        Animate();
     }
 
     private void Animate()
     {
+        if (penguin == null) return;
+
         if (Falling)
         {
             animator.SetBool("fall", true);
@@ -138,21 +144,21 @@ public class AntiController : MonoBehaviour
 
     private void Move() 
     {
-            if (Moving && _speed < MaxSpeed)
-            {
-                _speed += Acceleration * Time.deltaTime;
-            } else 
-            {
-                _speed -= Decceleration * Time.deltaTime;
-            }
+        if (Moving && _speed < MaxSpeed)
+        {
+            _speed += Acceleration * Time.fixedDeltaTime;
+        } else 
+        {
+            _speed -= Decceleration * Time.fixedDeltaTime;
+        }
 
-            _speed = Mathf.Clamp(_speed, 0, MaxSpeed);
+        _speed = Mathf.Clamp(_speed, 0, MaxSpeed);
 
         if (forward)
         {
-            rb.velocity += new Vector2(_speed * Time.deltaTime, 0);
+            rb.velocity += new Vector2(_speed * Time.fixedDeltaTime, 0);
         } else {
-            rb.velocity += new Vector2(-_speed * Time.deltaTime, 0);
+            rb.velocity += new Vector2(-_speed * Time.fixedDeltaTime, 0);
         }
     }
 
