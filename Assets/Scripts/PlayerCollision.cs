@@ -18,8 +18,18 @@ public class PlayerCollision : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Spike"))
-            OnSpikeCollision(other.transform);
+        if (other.gameObject.CompareTag("Spike")) OnSpikeCollision(other.transform);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Goal")) OnGoalCollisionTrigger(other.gameObject);
+    }
+
+    void OnGoalCollisionTrigger(GameObject goal)
+    {
+        Destroy(goal);
+        SceneManager.ShowLoseMenu();
     }
 
     void OnSpikeCollision(Transform from)

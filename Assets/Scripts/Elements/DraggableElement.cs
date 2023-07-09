@@ -1,19 +1,27 @@
 using UnityEngine;
+using System.Collections;
+using System;
+using DG.Tweening;
+
 public class DraggableElement : MonoBehaviour
 {
     public enum Axis { x, y, none };
     [SerializeField] private Axis axis = Axis.y;
     [SerializeField] private float min = 0f;
     [SerializeField] private float max = 0f;
-
+    [SerializeField] private int uses = -1;
+    [SerializeField] private bool returns = false;
+    [SerializeField] private float returnDelay = 1f;
+    [SerializeField] private float returnSpeed = 15f;
     [HideInInspector]
     public bool dragging = false;
     private Rigidbody2D rb;
     private Vector2 dragPosition;
     private Range? range;
+    private Vector2 startingPosition;
     void Start()
     {
-        Vector2 startingPosition = transform.position;
+        startingPosition = transform.position;
 
         if (min < max)
         {
@@ -33,19 +41,49 @@ public class DraggableElement : MonoBehaviour
     }
     void OnMouseDown()
     {
+        if (uses == 0) return;
+        if (movingSequnce != null) movingSequnce.Kill();
         dragging = true;
+        uses -= 1;
         dragPosition = GetMouseWorldPosition();
     }
+
+    private IEnumerator waitRoutine;
+    private Sequence movingSequnce;
+    void OnMouseUp()
+    {
+        dragging = false;
+        if (returns)
+        {
+            if (waitRoutine != null) StopCoroutine(waitRoutine);
+            waitRoutine = WaitAndCall(returnDelay, () => {
+                waitRoutine = null;
+                if (movingSequnce != null) movingSequnce.Kill();
+                float distance = Vector2.Distance(rb.position, startingPosition);
+                float duration = distance / returnSpeed;
+
+                movingSequnce = DOTween.Sequence()
+                    .Append(rb.DOMove(startingPosition, duration))
+                    .SetEase(Ease.Linear)
+                    .Play();
+                
+            });
+            StartCoroutine(waitRoutine);
+        }
+    }
+
+    private IEnumerator WaitAndCall(float duration, Action action)
+    {
+        yield return new WaitForSeconds(duration);
+        action?.Invoke();
+    }
+
     private Vector2 GetMouseWorldPosition()
     {
         Camera cam = Camera.main;
         Vector3 mousePos = Input.mousePosition;
         Vector3 worldPos = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.nearClipPlane));
         return new Vector2(worldPos.x, worldPos.y);
-    }
-    void OnMouseUp()
-    {
-        dragging = false;
     }
     void FixedUpdate()
     {

@@ -52,7 +52,6 @@ public static class SceneManager
     {
         get => UnityEngine.SceneManagement.SceneManager.GetSceneByName(PAUSE_MENU_KEY).isLoaded;
     }
-
     public static bool startMenuActive
     {
         get => UnityEngine.SceneManagement.SceneManager.GetSceneByName(START_MENU_KEY).isLoaded;

@@ -52,6 +52,6 @@ public class HUD : MonoBehaviour
     {
         int countdownValue = countdownTime.Value;
         countdown.text = $"{countdownValue}";
-        if (countdownValue <= 0) SceneManager.ShowLoseMenu();
+        if (countdownValue <= 0) SceneManager.ShowWinMenu();
     }
 }
